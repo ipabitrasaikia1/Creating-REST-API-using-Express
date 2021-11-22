@@ -7,8 +7,15 @@ const data = require("./bookDetails.json")
 
 app.use(express.json())
 
+const looger = (req,res,next)=>{
+    console.log("Request from logger")
+    req.name = "Pabitra Saikia"
+    next();
+}
+app.use(looger)
 app.get("/",(req,res)=>{
 
+    console.log(req.method,"By",req.name)
     res.send(data)
 }) 
 
