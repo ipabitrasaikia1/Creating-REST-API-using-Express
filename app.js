@@ -8,24 +8,26 @@ const data = require("./bookDetails.json")
 app.use(express.json())
 
 const looger = (req,res,next)=>{
-    console.log("Request from logger")
+    console.log(req.method,"Request from logger")
     req.name = "Pabitra Saikia"
     next();
+    
 }
-app.use(looger)
-app.get("/",(req,res)=>{
+
+app.get("/",looger,(req,res)=>{
 
     console.log(req.method,"By",req.name)
     res.send(data)
 }) 
 
-app.get("/:author",(req,res)=>{
+app.get("/:author",looger,(req,res)=>{
 
     const newData = data.filter((userData)=> userData.author=== req.params.author )
     res.send(newData)
+    console.log({"API request by" : req.name},"Books", newData)
 }) 
 
-app.post("/",(req,res)=>{
+app.post("/",looger,(req,res)=>{
     const newData = [...data,req.body]
     res.send(newData)
 }) 
@@ -46,7 +48,7 @@ app.patch("/:author",(req,res)=>{
     res.send(newData)
 }) 
 
-app.delete("/:author",(req,res)=>{
+app.delete("/:author",looger,(req,res)=>{
     const newData  = data.filter((item) => item.author != req.params.author)
     res.send(newData)
 })
